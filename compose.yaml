@@ -5,6 +5,8 @@ services:
     image: nouchka/sqlite3:latest
     stdin_open: true
     tty: true
+    ports:
+    - 8501:8501
     volumes:
       - sqlite-data:/database
 
@@ -12,7 +14,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: hello:1.0
+    image: hescriptllo:1.0
     ports:
     - 8501:8501
     volumes:

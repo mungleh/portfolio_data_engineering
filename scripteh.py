@@ -14,17 +14,17 @@ def url_to_df(url: str):
         cr = csv.reader(decoded_content.splitlines(), delimiter=",")
         data_list = list(cr)
 
-        # header = data_list[0]
-        # rows = data_list[1:]
-        # result_dict = {header[i]: [row[i] for row in rows] for i in range(len(header))}
+        header = data_list[0]
+        rows = data_list[1:]
+        result_dict = {header[i]: [row[i] for row in rows] for i in range(len(header))}
 
-        return pd.DataFrame(data_list)
+        return pd.DataFrame(result_dict)
 
 
 produits_df = url_to_df(PRODUITS_URL)
 magasins_df = url_to_df(MAGASINS_URL)
 ventes_df = url_to_df(VENTES_URL)
 
-print(produits_df)
-print(magasins_df)
-print(ventes_df)
+produits_df.to_csv('produits_df.csv', index=False)
+magasins_df.to_csv('magasins_df.csv', index=False)
+ventes_df.to_csv('ventes_df.csv', index=False)
