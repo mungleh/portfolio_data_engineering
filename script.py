@@ -45,75 +45,89 @@ try:
     print("SQLite Database Version is: ", record)
 
     # create tables
-    produits_df.to_sql("produits", conn, if_exists="replace")
-    print("produits table added")
-    magasins_df.to_sql("magasins", conn, if_exists="replace")
-    print("magasins table added")
-    ventes_df.to_sql("ventes", conn, if_exists="append")
-    print("ventes table added")
+    cursor.execute("""
+                   CREATE TABLE if not exists magasins
+                   (
+                   ID_Magasin INTEGER PRIMARY KEY,
+                   Ville TEXT,
+                   Nombre_de_salariés INTEGER NOT NULL
+                   )
+                   """)
+    print("Created table magasins")
+
+    cursor.execute("""
+                   CREATE TABLE if not exists produits
+                   (
+                   ID_Référence_produit TEXT PRIMARY KEY,
+                   Nom TEXT,
+                   Prix DOUBLE DEFAULT NULL,
+                   Stock INTEGER DEFAULT NULL
+                   )
+                   """)
+    print("Created table produits")
+
+    cursor.execute("""
+                   CREATE TABLE if not exists ventes
+                   (
+                   ID_Référence_produit TEXT,
+                   Quantité INTEGER DEFAULT NULL,
+                   ID_Magasin INTEGER,
+                   Date DATE,
+                   FOREIGN KEY(ID_Référence_produit) REFERENCES produits(ID_Référence_produit),
+                   FOREIGN KEY(ID_Magasin) REFERENCES magasins(ID_Magasin)
+                   )
+                   """)
+    print("Created table ventes")
+
+    for index, row in magasins_df.iterrows():
+        cursor.execute(f"""
+                    INSERT OR REPLACE INTO magasins
+                    (ID_Magasin, Ville, Nombre_de_salariés)
+                    VALUES
+                    ({row['ID Magasin']}, '{row['Ville']}', {row['Nombre de salariés']})
+                    """)
+        print(f"Inserted into table magasins ({row['ID Magasin']}, '{row['Ville']}', {row['Nombre de salariés']})")
+
+    for index, row in produits_df.iterrows():
+        cursor.execute(f"""
+                    INSERT OR REPLACE INTO produits
+                    (ID_Référence_produit, Nom, Prix, Stock)
+                    VALUES
+                    ('{row['ID Référence produit']}', '{row['Nom']}', {row['Prix']}, {row['Stock']})
+                    """)
+        print(f"Inserted into table produits ({row['ID Référence produit']}, {row['Nom']}, {row['Prix']}, {row['Stock']})")
+
+    for index, row in ventes_df.iterrows():
+        cursor.execute(f"""
+                    INSERT OR REPLACE INTO ventes
+                    (ID_Référence_produit, Quantité, ID_Magasin, Date)
+                    VALUES
+                    ('{row['ID Référence produit']}', {row['Quantité']}, {row['ID Magasin']}, {row['Date']})
+                    """)
+        print(f"Inserted into table ventes ({row['ID Référence produit']}, {row['Quantité']}, {row['ID Magasin']}, {row['Date']})")
+
+    # # create tables
+    # produits_df.to_sql("produits", conn, if_exists="replace")
+    # print("produits table added")
+    # magasins_df.to_sql("magasins", conn, if_exists="replace")
+    # print("magasins table added")
+    # ventes_df.to_sql("ventes", conn, if_exists="append")
+    # print("ventes table added")
 
     # printing all tables list
     print("List of tables")
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
     print(cursor.fetchall())
 
-    cursor.execute("SELECT * FROM produits")
-    print(cursor.fetchall())
+    # cursor.execute("SELECT * FROM produits")
+    # print(cursor.fetchall())
 
-    cursor.execute("SELECT * FROM magasins")
-    print(cursor.fetchall())
+    # cursor.execute("SELECT * FROM magasins")
+    # print(cursor.fetchall())
 
-    cursor.execute("SELECT * FROM ventes")
-    print(cursor.fetchall())
+    # cursor.execute("SELECT * FROM ventes")
+    # print(cursor.fetchall())
 
-    # cursor.close()
-
-    # # Create table produits
-    # conn = sqlite3.connect("SQLite_Python.db")
-    # sqlite_create_table_query = """CREATE TABLE produits (
-    #                             Nom VARCHAR(255),
-    #                             ID_Référence_produit VARCHAR(255) PRIMARY KEY,
-    #                             Prix FLOAT,
-    #                             Stock INTEGER
-    #                             );"""
-
-    # cursor = conn.cursor()
-    # print("Successfully Connected to SQLite")
-    # cursor.execute(sqlite_create_table_query)
-    # conn.commit()
-    # print("SQLite table produits created")
-    # cursor.close()
-
-    # # Create table magasins
-    # conn = sqlite3.connect("SQLite_Python.db")
-    # sqlite_create_table_query = """CREATE TABLE produits (
-    #                             ID_Magasin VARCHAR(255) PRIMARY KEY,
-    #                             Ville VARCHAR(255),
-    #                             Nombre_de_salariés VARCHAR(255)
-    #                             );"""
-
-    # cursor = conn.cursor()
-    # print("Successfully Connected to SQLite")
-    # cursor.execute(sqlite_create_table_query)
-    # conn.commit()
-    # print("SQLite table magasins created")
-    # cursor.close()
-
-    # # Create table ventes
-    # conn = sqlite3.connect("SQLite_Python.db")
-    # sqlite_create_table_query = """CREATE TABLE produits (
-    #                             Date VARCHAR(255) ,
-    #                             ID_Référence_produit VARCHAR(255),
-    #                             produit VARCHAR(255),
-    #                             Quantité INTEGER,
-    #                             ID_Magasin INTEGER PRIMARY KEY,
-    #                             );"""
-
-    # cursor = conn.cursor()
-    # print("Successfully Connected to SQLite")
-    # cursor.execute(sqlite_create_table_query)
-    # conn.commit()
-    # print("SQLite table ventes created")
     # cursor.close()
 
 except sqlite3.Error as error:
