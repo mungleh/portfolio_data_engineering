@@ -106,29 +106,25 @@ try:
                     """)
         print(f"Inserted into table ventes ({row['ID Référence produit']}, {row['Quantité']}, {row['ID Magasin']}, {row['Date']})")
 
-    # # create tables
-    # produits_df.to_sql("produits", conn, if_exists="replace")
-    # print("produits table added")
-    # magasins_df.to_sql("magasins", conn, if_exists="replace")
-    # print("magasins table added")
-    # ventes_df.to_sql("ventes", conn, if_exists="append")
-    # print("ventes table added")
 
     # printing all tables list
     print("List of tables")
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
     print(cursor.fetchall())
 
-    # cursor.execute("SELECT * FROM produits")
-    # print(cursor.fetchall())
+    # tables show settings
+    # cursor.execute(".header on")
+    # cursor.execute(".mode column")
 
-    # cursor.execute("SELECT * FROM magasins")
-    # print(cursor.fetchall())
+    # show table
+    cursor.execute("SELECT * FROM produits;")
+    print(cursor.fetchall())
 
-    # cursor.execute("SELECT * FROM ventes")
-    # print(cursor.fetchall())
+    cursor.execute("SELECT * FROM magasins;")
+    print(cursor.fetchall())
 
-    # cursor.close()
+    cursor.execute("SELECT * FROM ventes;")
+    print(cursor.fetchall())
 
 except sqlite3.Error as error:
     print("Error while connecting to sqlite", error)
