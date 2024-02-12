@@ -1,9 +1,31 @@
 # exo_formulaire
 
-run "export COMPOSE_PROJECT_NAME=exo_formulaire"
+```
+export COMPOSE_PROJECT_NAME=exo_formulaire
+```
 
-run "docker-compose up -d"
+```
+docker-compose up -d
+```
 
 to stop
 
-run "docker-compose down"
+```
+docker-compose down"
+```
+
+to build but not run
+
+```
+docker-compose up --no-start
+```
+
+to run specific steps
+
+```
+docker-compose start sqlite3 create
+```
+
+```
+docker-compose start insert
+```

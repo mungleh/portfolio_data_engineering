@@ -1,0 +1,12 @@
+# python base image in the container from Docker Hub
+FROM python:3.8.12-buster
+
+# copy files to the /app folder in the container
+COPY insert.py /insert.py
+COPY requirements.txt /requirements.txt
+
+RUN pip install -r /requirements.txt
+
+EXPOSE 8503
+
+CMD ["python","-u","insert.py","--server.port", "8503"]
