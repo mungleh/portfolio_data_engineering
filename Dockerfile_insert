@@ -2,11 +2,11 @@
 FROM python:3.8.12-buster
 
 # copy files to the /app folder in the container
-COPY scripts/insert.py /app/insert.py
-COPY scripts/requirements.txt /app/requirements.txt
+COPY ./scripts/insert.py /app/insert.py
+COPY requirements.txt /app/requirements.txt
 
 RUN pip install -r /app/requirements.txt
 
 EXPOSE 8503
 
-CMD ["python","-u","insert.py","--server.port", "8503"]
+CMD ["python","-u","/app/insert.py","--server.port", "8503"]

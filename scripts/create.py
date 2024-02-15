@@ -78,6 +78,17 @@ try:
     )
     print("Created table nbr_ventes")
 
+    # create tables ez
+    # produits_df.to_sql("produits", conn, if_exists="replace")
+    # print("produits table added")
+    # magasins_df.to_sql("magasins", conn, if_exists="replace")
+    # print("magasins table added")
+    # ventes_df.to_sql("ventes", conn, if_exists="replace")
+    # print("ventes table added")
+
+    # tables show settings
+    # cursor.execute(".header on")
+    # cursor.execute(".mode column")
 
 except sqlite3.Error as error:
     print("Error while connecting to sqlite", error)
